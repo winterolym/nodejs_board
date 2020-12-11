@@ -5,6 +5,8 @@ var methodOverride = require('method-override');
 var flash = require('connect-flash');
 var session = require('express-session');
 var passport = require('./config/passport');
+var client = require('redis').createClient(process.env.REDIS_URL);
+
 var app = express();
 
 // Config
@@ -32,7 +34,29 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(methodOverride('_method'));
 app.use(flash());
-app.use(session({secret:MySecret, resave:true, saveUninitialized:true}));
+app.use(session({
+  cookie:{                // Use Cookies
+    secure: true,
+    maxAge:60000
+  },
+  store: new RedisStore({
+    url: "https://gaon-bulletin-board.herokuapp.com/",
+    port: 3000,
+    client: client,
+    prefix : "session:",
+    db : 0
+  }),
+  secret:MySecret,
+  resave:true,
+  saveUninitialized:true
+}));
+
+app.use(function(req,res,next){
+if(!req.session){
+    return next(new Error('Oh no')); //handle error
+}
+next(); //otherwise continue
+});
 
 // Passport
 app.use(passport.initialize());
