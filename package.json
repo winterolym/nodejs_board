@@ -4,8 +4,8 @@
   "description": "가온고등학교 컴퓨터공학선도 동아리 웹사이트 프로젝트",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-    "start": "node your-script.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
