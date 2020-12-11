@@ -55,7 +55,7 @@ app.use('/posts', require('./routes/posts'));
 app.use('/users', require('./routes/users'));
 
 // Port setting
-var port = 3000;
+var port = 80;
 app.listen(port, function(){
   console.log('server on! http://localhost:'+port);
 });
