@@ -14,6 +14,17 @@ router.get('/', function(req, res){
     });
 });
 
+// Posts 불러오기
+router.get('/getPosts', function(req, res){
+  Post.find({})
+    .populate('author')
+    .sort('-createdAt')
+    .exec(function(err, posts){
+      if(err) return res.json(err);
+      res.json(posts);
+    });
+});
+
 // New
 router.get('/new', util.isLoggedin, function(req, res){
   var post = req.flash('post')[0] || {};
