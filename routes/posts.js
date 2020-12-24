@@ -10,10 +10,12 @@ router.get('/', async function(req, res){
   page = !isNaN(page)?page:1;
   limit = !isNaN(limit)?limit:10;
 
+  var searchQuery = createSearchQuery(req.query);
+
   var skip = (page-1)*limit;
-  var count = await Post.countDocuments({});
+  var count = await Post.countDocuments(searchQuery);
   var maxPage = Math.ceil(count/limit);
-  var posts = await Post.find({})
+  var posts = await Post.find(searchQuery)
     .populate('author')
     .sort('-createdAt')
     .skip(skip)
@@ -22,9 +24,11 @@ router.get('/', async function(req, res){
 
   res.render('posts/index', {
     posts:posts,
-    currentPage:page, // 9
-    maxPage:maxPage,  // 9
-    limit:limit       // 9
+    currentPage:page,
+    maxPage:maxPage,
+    limit:limit,
+    searchType:req.query.searchType,
+    searchText:req.query.searchText
   });
 });
 
@@ -43,7 +47,7 @@ router.get('/getPosts', function(req, res){
 router.get('/new', util.isLoggedin, function(req, res){
   var post = req.flash('post')[0] || {};
   var errors = req.flash('errors')[0] || {};
-  res.redirect({ post:post, errors:errors });
+  res.render('posts/new', { post:post, errors:errors });
 });
 
 // create
@@ -55,7 +59,7 @@ router.post('/', util.isLoggedin, function(req, res){
       req.flash('errors', util.parseError(err));
       return res.redirect('/posts/new'+res.locals.getPostQueryString());
     }
-    res.redirect('/posts'+res.locals.getPostQueryString(false, {page:1}));
+    res.redirect('/posts'+res.locals.getPostQueryString(false, { page:1, searchText:'' }));
   });
 });
 
@@ -116,4 +120,20 @@ function checkPermission(req, res, next){
 
     next();
   });
+}
+
+function createSearchQuery(queries){
+  var searchQuery = {};
+  if(queries.searchType && queries.searchText && queries.searchText.length >= 3){
+    var searchTypes = queries.searchType.toLowerCase().split(',');
+    var postQueries = [];
+    if(searchTypes.indexOf('title')>=0){
+      postQueries.push({ title: { $regex: new RegExp(queries.searchText, 'i') } });
+    }
+    if(searchTypes.indexOf('body')>=0){
+      postQueries.push({ body: { $regex: new RegExp(queries.searchText, 'i') } });
+    }
+    if(postQueries.length>0) searchQuery = {$or:postQueries};
+  }
+  return searchQuery;
 }
