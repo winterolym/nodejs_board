@@ -2,6 +2,7 @@ var express  = require('express');
 var router = express.Router();
 var Post = require('../models/Post');
 var User = require('../models/User');
+var Comment = require('../models/Comment');
 var util = require('../util');
 
 // Index
@@ -19,12 +20,33 @@ router.get('/', async function(req, res){
   if(searchQuery) {
     var count = await Post.countDocuments(searchQuery);
     maxPage = Math.ceil(count/limit);
-    posts = await Post.find(searchQuery)
-      .populate('author')
-      .sort('-createdAt')
-      .skip(skip)
-      .limit(limit)
-      .exec();
+    posts = await Post.aggregate([
+      { $match: searchQuery },
+      { $lookup: {
+          from: 'users',
+          localField: 'author',
+          foreignField: '_id',
+          as: 'author'
+      } },
+      { $unwind: '$author' },
+      { $sort : { createdAt: -1 } },
+      { $skip: skip },
+      { $limit: limit },
+      { $lookup: {
+          from: 'comments',
+          localField: '_id',
+          foreignField: 'post',
+          as: 'comments'
+      } },
+      { $project: {
+          title: 1,
+          author: {
+            username: 1,
+          },
+          createdAt: 1,
+          commentCount: { $size: '$comments'}
+      } },
+    ]).exec();
   }
 
   res.render('posts/index', {
@@ -70,11 +92,19 @@ router.post('/', util.isLoggedin, function(req, res){
 
 // show
 router.get('/:id', function(req, res){
-  Post.findOne({_id:req.params.id})
-    .populate('author')
-    .exec(function(err, post){
-      if(err) return res.json(err);
-      res.render('posts/show', {post:post});
+  var commentForm = req.flash('commentForm')[0] || { _id: null, form: {} };
+  var commentError = req.flash('commentError')[0] || { _id:null, parentComment: null, errors:{}}; //1
+
+  Promise.all([
+      Post.findOne({_id:req.params.id}).populate({ path: 'author', select: 'username' }),
+      Comment.find({post:req.params.id}).sort('createdAt').populate({ path: 'author', select: 'username' })
+    ])
+    .then(([post, comments]) => {
+      var commentTrees = util.convertToTrees(comments, '_id','parentComment','childComments');                               //2
+      res.render('posts/show', { post:post, commentTrees:commentTrees, commentForm:commentForm, commentError:commentError}); //2
+    })
+    .catch((err) => {
+      return res.json(err);
     });
 });
 
