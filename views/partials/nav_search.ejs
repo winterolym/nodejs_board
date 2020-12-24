@@ -35,14 +35,18 @@
       </ul>
       <!-- Links -->
 
-      <!-- Login from -->
+      <!-- Search form / Login from -->
       <ul class="navbar-nav">
+        <!-- Search form -->
+        <div class="md-form nav-search-control">
+          <input class="form-control border-0 nav-search shadow-none bg-dark" type="text" placeholder="Search" aria-label="Search">
+        </div>
         <% if(isAuthenticated){ %>
           <li class="nav-item"><a href="/users/<%= currentUser.username %>" class="nav-link">My Account</a></li>
           <li class="nav-item"><a href="/logout" class="nav-link">Logout</a></li>
-      <% } else { %>
-        <li class="nav-item"><a href="/users/new" class="nav-link">Sign Up</a></li>
-        <li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
+        <% } else { %>
+          <li class="nav-item"><a href="/users/new" class="nav-link">Sign Up</a></li>
+          <li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
         <% } %>
       </ul>
     </div>

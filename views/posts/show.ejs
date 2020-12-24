@@ -4,7 +4,7 @@
     <%- include('../partials/head') %>
   </head>
   <body>
-    <%- include('../partials/nav') %>
+    <%- include('../partials/nav_search') %>
 
     <div class="container mt-3">
 
@@ -40,9 +40,9 @@
       </div>
 
       <div class="mt-3">
-        <a class="btn btn-primary" href="/posts">Back</a>
+        <a class="btn btn-primary" href="#" onClick="history.go(-1); return false;">Back</a>
         <% if(isAuthenticated && post.author && currentUser.id == post.author.id){ %>
-          <a class="btn btn-primary" href="/posts/<%= post._id %>/edit">Edit</a>
+          <a class="btn btn-primary" href="/posts/<%= post._id %>/edit<%= getPostQueryString() %>">Edit</a>
 
           <!-- 삭제 버튼(Modal) -->
           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deletePost">
@@ -60,7 +60,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                  <form action="/posts/<%= post._id %>?_method=delete" method="post" class="d-inline">
+                  <form action="/posts/<%= post._id %>?_method=delete<%= getPostQueryString(true) %>" method="post" class="d-inline">
                     <button type="submit" class="btn btn-primary">삭제</button>
                   </form>
                 </div>

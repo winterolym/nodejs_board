@@ -2,22 +2,31 @@ var express = require('express');
 var router = express.Router();
 var passport = require('../config/passport');
 var fetch = require("node-fetch");
+var async = require('async');
+
+function apiCall(url) {
+  return function(callback) {
+    fetch(url)
+    .then(function(res){
+      return res.json();
+    })
+    .then(function(data) {
+      return callback(null, data);
+    })
+    .catch(function(error){
+      return callback(error);
+    });
+  };
+}
 
 // Home
 router.get('/', function(req, res){
-  fetch('http://localhost:3000/posts/getPosts')
-  .then(function(res){
-    return res.json();
-  })
-  .then(function(data) {
-    returned = data;
-    console.log(returned); //expecting array
-    res.render('home/welcome', {posts:returned});
-  })
-  .catch(function(error){
-    return console.log(error);
+  async.parallel({
+    posts: apiCall('http://localhost:3000/posts/getPosts')
+  }, function(err, results) {
+    if (err) console.log(err);
+    res.render("home/welcome", results);
   });
-
 });
 
 router.get('/about', function(req, res){

@@ -30,3 +30,126 @@ body {
 .user-form {
   width: 400px;
 }
+.carousel-inner .item img {
+    height: 100%;
+    width: 100% !important;
+}
+
+/* search thingy */
+
+.nav-search-control {
+  outline: 0;
+  border-bottom: 1px solid grey;
+}
+
+.nav-search-control:focus, .nav-search-control:active {
+  background: transparent;
+}
+
+.nav-search {
+  color:grey;
+  background: transparent;
+}
+
+.nav-search:focus {
+  color: white;
+  background: transparent;
+}
+
+/* Carousel base class */
+.main-carousel {
+  margin-bottom: 4rem;
+}
+/* Since positioning the image, we need to help out the caption */
+.main-carousel-caption {
+  bottom: 3rem;
+  z-index: 10;
+}
+
+/* Declare heights because of positioning of img element */
+.main-carousel-item {
+  height: 32rem;
+}
+.main-carousel-item > img {
+  overflow: hidden;
+  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100%;
+  height: 32rem;
+}
+
+
+/* MARKETING CONTENT
+-------------------------------------------------- */
+
+/* Center align the text within the three columns below the carousel */
+.marketing .col-lg-4 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.marketing h2 {
+  font-weight: 400;
+}
+/* rtl:begin:ignore */
+.marketing .col-lg-4 p {
+  margin-right: .75rem;
+  margin-left: .75rem;
+}
+/* rtl:end:ignore */
+
+
+/* Featurettes
+------------------------- */
+
+.featurette-divider {
+  margin: 5rem 0; /* Space out the Bootstrap <hr> more */
+}
+
+/* Thin out the marketing headings */
+.featurette-heading {
+  font-weight: 300;
+  line-height: 1;
+  /* rtl:remove */
+  letter-spacing: -.05rem;
+}
+
+
+/* RESPONSIVE CSS
+-------------------------------------------------- */
+
+@media (min-width: 40em) {
+  /* Bump up size of carousel content */
+  .main-carousel-caption p {
+    margin-bottom: 1.25rem;
+    font-size: 1.25rem;
+    line-height: 1.4;
+  }
+
+  .featurette-heading {
+    font-size: 50px;
+  }
+}
+
+@media (min-width: 62em) {
+  .featurette-heading {
+    margin-top: 7rem;
+  }
+}
+
+/* Carousel Image Overlay
+-------------------------------------------------- */
+.overlay {
+    display: none;
+}
+
+.main-carousel-item .overlay {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: black;
+    opacity: 0.7;
+    top: 0;
+}
