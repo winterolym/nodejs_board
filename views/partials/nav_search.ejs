@@ -38,14 +38,42 @@
       </ul>
       <!-- Links -->
 
-      <!-- Login from -->
+      <!-- Search form / Login from -->
       <ul class="navbar-nav">
+        <!-- Search form -->
+        <div class="nav-item dropdown">
+          <form action="/posts" method="get" class="post-index-tool" autocomplete="off" >
+            <div class="input-group">
+              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Search
+              </a>
+              <div class="dropdown-menu dropdown-menu-dark" aria-labelledby="searchDropdown" style="width: 100%;">
+                <div class="px-4 py-3">
+                  <div class="mb-3">
+                    <div class="md-form nav-search-control">
+                      <input class="form-control border-0 nav-search shadow-none bg-dark" type="text" placeholder="Search" aria-label="Search" minLength="3" name="searchText" value="<%= searchText %>">
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <select name="searchType" class="form-select">
+                      <option value="title,body" <%= searchType=='title,body'?'selected':'' %>>Title, Body</option>
+                      <option value="title" <%= searchType=='title'?'selected':'' %>>Title</option>
+                      <option value="body" <%= searchType=='body'?'selected':'' %>>Body</option>
+                      <option value="author" <%= searchType=='author'?'selected':'' %>>Author</option>
+                    </select>
+                  </div>
+                  <button class="btn btn-outline-primary" type="submit">search</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
         <% if(isAuthenticated){ %>
           <li class="nav-item"><a href="/users/<%= currentUser.username %>" class="nav-link">My Account</a></li>
           <li class="nav-item"><a href="/logout" class="nav-link">Logout</a></li>
-      <% } else { %>
-        <li class="nav-item"><a href="/users/new" class="nav-link">Sign Up</a></li>
-        <li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
+        <% } else { %>
+          <li class="nav-item"><a href="/users/new" class="nav-link">Sign Up</a></li>
+          <li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
         <% } %>
       </ul>
     </div>

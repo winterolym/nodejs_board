@@ -6,7 +6,7 @@
   <body>
     <%- include('../partials/nav') %>
 
-    <div class="container mb-3">
+    <div class="container mt-3">
 
       <h3 class="mb-3">Edit User</h3>
 
@@ -85,7 +85,7 @@
         <% } %>
 
         <div class="buttons">
-          <a class="btn btn-primary" href="/users/<%= username %>">Back</a>
+          <a class="btn btn-primary" href="#" onClick="history.go(-1); return false;">Back</a>
           <button type="submit" class="btn btn-primary">Submit</button>
         </div>
 

@@ -30,3 +30,193 @@ body {
 .user-form {
   width: 400px;
 }
+.carousel-inner .item img {
+    height: 100%;
+    width: 100% !important;
+}
+
+/* search thingy */
+
+.nav-search-control {
+  outline: 0;
+  border-bottom: 1px solid grey;
+}
+
+.nav-search-control:focus, .nav-search-control:active {
+  background: transparent;
+}
+
+.nav-search {
+  color:grey;
+  background: transparent;
+}
+
+.nav-search:focus {
+  color: white;
+  background: transparent;
+}
+
+/* Carousel base class */
+.main-carousel {
+  margin-bottom: 4rem;
+}
+/* Since positioning the image, we need to help out the caption */
+.main-carousel-caption {
+  bottom: 3rem;
+  z-index: 10;
+}
+
+/* Declare heights because of positioning of img element */
+.main-carousel-item {
+  height: 32rem;
+}
+.main-carousel-item > img {
+  overflow: hidden;
+  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100%;
+  height: 32rem;
+}
+
+
+/* MARKETING CONTENT
+-------------------------------------------------- */
+
+/* Center align the text within the three columns below the carousel */
+.marketing .col-lg-4 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.marketing h2 {
+  font-weight: 400;
+}
+/* rtl:begin:ignore */
+.marketing .col-lg-4 p {
+  margin-right: .75rem;
+  margin-left: .75rem;
+}
+/* rtl:end:ignore */
+
+
+/* Featurettes
+------------------------- */
+
+.featurette-divider {
+  margin: 5rem 0; /* Space out the Bootstrap <hr> more */
+}
+
+/* Thin out the marketing headings */
+.featurette-heading {
+  font-weight: 300;
+  line-height: 1;
+  /* rtl:remove */
+  letter-spacing: -.05rem;
+}
+
+
+/* RESPONSIVE CSS
+-------------------------------------------------- */
+
+@media (min-width: 40em) {
+  /* Bump up size of carousel content */
+  .main-carousel-caption p {
+    margin-bottom: 1.25rem;
+    font-size: 1.25rem;
+    line-height: 1.4;
+  }
+
+  .featurette-heading {
+    font-size: 50px;
+  }
+}
+
+@media (min-width: 62em) {
+  .featurette-heading {
+    margin-top: 7rem;
+  }
+}
+
+/* Carousel Image Overlay
+-------------------------------------------------- */
+.overlay {
+    display: none;
+}
+
+.main-carousel-item .overlay {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: black;
+    opacity: 0.7;
+    top: 0;
+}
+
+/* Search Highlight
+-------------------------------------------------- */
+.highlighted {
+  background-color: yellow;
+}
+
+/* Comments
+-------------------------------------------------- */
+.post-body,
+.comment-text {
+  white-space: pre-line;
+}
+
+.comment-color {
+    background-color: #fafafa
+}
+
+.comment-control {
+    height: 48px;
+    border-radius: 25px
+}
+
+.comment-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #35b69f;
+    outline: 0;
+    box-shadow: none;
+    text-indent: 10px
+}
+
+.comment-edit,
+.comment-reply,
+.comment-edit-enabled .comment-show {
+  display:none;
+}
+
+.comment-edit-enabled .comment-edit,
+.comment-reply-enabled .comment-reply {
+  display:inherit;
+}
+
+.c-badge {
+    background-color: #35b69f;
+    color: white;
+    height: 20px;
+    font-size: 11px;
+    width: 42px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2px
+}
+
+/* a Tag underline fix
+-------------------------------------------------- */
+.board-table .author,
+.board-table .date {
+  width: 100px;
+}
+.board-table .title-container:hover .title-comments, /* 1 */
+.board-table .title-container:hover .title-text
+{
+  text-decoration: underline;
+}

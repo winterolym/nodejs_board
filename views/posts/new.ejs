@@ -6,7 +6,7 @@
   <body>
     <%- include('../partials/nav') %>
 
-    <div class="container mb-3">
+    <div class="container mt-3">
 
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb p-1 pl-2 pr-2">
@@ -41,7 +41,7 @@
         <% } %>
 
         <div>
-          <a class="btn btn-primary" href="/posts">Back</a>
+          <a class="btn btn-primary" href="#" onClick="history.go(-1); return false;">Back</a>
           <button type="submit" class="btn btn-primary">Submit</button>
         </div>
 
