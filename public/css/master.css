@@ -215,8 +215,9 @@ body {
 .board-table .date {
   width: 100px;
 }
-.board-table .title-container:hover .title-comments, /* 1 */
-.board-table .title-container:hover .title-text
+.board-table .title-container:hover .title-comments,
+.board-table .title-container:hover .title-text,
+.board-table .title-container:hover .title-attachment
 {
   text-decoration: underline;
 }

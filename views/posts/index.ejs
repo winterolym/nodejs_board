@@ -33,6 +33,9 @@
                   <div data-search-highlight="title" class="title-ellipsis ellipsis float-left" style="display: inline;">
                     <span class="title-text"><%= post.title %></span>
                   </div>
+                  <% if(post.attachment){ %>
+                    <small class="title-attachment d-inline-block pe-2"><span class="material-icons" style="vertical-align:middle; color:black;">attachment</span></small>
+                  <% } %>
                   <% if(post.commentCount){ %>
                     <small class="title-comments d-inline-block pe-2"style="display: inline; float: right;">(<%= post.commentCount %>)</small>
                   <% } %>
