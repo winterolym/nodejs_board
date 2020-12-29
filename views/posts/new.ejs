@@ -18,7 +18,7 @@
 
       <form action="/posts<%= getPostQueryString() %>" enctype="multipart/form-data" method="post">
 
-        <div class="form-group">
+        <div class="form-group mb-3">
           <label for="title">Title</label>
           <input type="text" id="title" name="title" value="<%= post.title %>" class="form-control <%= (errors.title)?'is-invalid':'' %>">
           <% if(errors.title){ %>
@@ -26,12 +26,12 @@
           <% } %>
         </div>
 
-        <div class="form-group">
+        <div class="form-group mb-3">
           <label for="attachment">Attachment</label>
-          <input type="file" name="attachment" class="form-control-file" id="attachment">
+          <input type="file" name="attachment" class="form-control" id="attachment">
         </div>
 
-        <div class="form-group">
+        <div class="form-group mb-3">
           <label for="body">Body</label>
           <textarea id="body" name="body" rows="5" class="form-control <%= (errors.body)?'is-invalid':'' %>"><%= post.body %></textarea>
           <% if(errors.body){ %>

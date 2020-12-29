@@ -7,6 +7,7 @@ var User = require('../models/User');
 var Comment = require('../models/Comment');
 var File = require('../models/File');
 var util = require('../util');
+var fs = require('fs');
 
 // Index
 router.get('/', async function(req, res){
@@ -135,7 +136,9 @@ router.get('/:id/edit', util.isLoggedin, checkPermission, function(req, res){
   var post = req.flash('post')[0];
   var errors = req.flash('errors')[0] || {};
   if(!post){
-    Post.findOne({_id:req.params.id}, function(err, post){
+    Post.findOne({_id:req.params.id})
+      .populate({path:'attachment',match:{isDeleted:false}})
+      .exec(function(err, post){
         if(err) return res.json(err);
         res.render('posts/edit', { post:post, errors:errors });
       });
@@ -147,7 +150,19 @@ router.get('/:id/edit', util.isLoggedin, checkPermission, function(req, res){
 });
 
 // update
-router.put('/:id', util.isLoggedin, checkPermission, function(req, res){
+router.put('/:id', util.isLoggedin, checkPermission, upload.single('newAttachment'), async function(req, res){
+  var post = await Post.findOne({_id:req.params.id}).populate({path:'attachment',match:{isDeleted:false}});
+  if(post.attachment && (req.file || !req.body.attachment)){
+    var fileLink = './uploadedFiles/' + post.attachment.serverFileName;
+    fs.stat(fileLink , function(err, stats) {
+      if(err) return console.error(err);
+      fs.unlinkSync(fileLink,function(err){
+        if(err) return console.log(err);
+      });
+    });
+    post.attachment.processDelete();
+  }
+  req.body.attachment = req.file?await File.createNewInstance(req.file, req.user._id, req.params.id):post.attachment;
   req.body.updatedAt = Date.now();
   Post.findOneAndUpdate({_id:req.params.id}, req.body, {runValidators:true}, function(err, post){
     if(err){
@@ -160,7 +175,18 @@ router.put('/:id', util.isLoggedin, checkPermission, function(req, res){
 });
 
 // destroy
-router.delete('/:id', util.isLoggedin, checkPermission, function(req, res){
+router.delete('/:id', util.isLoggedin, checkPermission, async function(req, res){
+  var post = await Post.findOne({_id:req.params.id}).populate({path:'attachment',match:{isDeleted:false}});
+  if(post.attachment) {
+    var fileLink = './uploadedFiles/' + post.attachment.serverFileName;
+    fs.stat(fileLink , function(err, stats) {
+      if(err) return console.error(err);
+      fs.unlinkSync(fileLink,function(err){
+        if(err) return console.log(err);
+      });
+    });
+    post.attachment.processDelete();
+  }
   Post.deleteOne({_id:req.params.id}, function(err){
     if(err) return res.json(err);
     res.redirect('/posts'+res.locals.getPostQueryString());
