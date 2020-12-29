@@ -1,9 +1,13 @@
 var express  = require('express');
 var router = express.Router();
+var multer = require('multer');
+var upload = multer({ dest: 'uploadedFiles/' });
 var Post = require('../models/Post');
 var User = require('../models/User');
 var Comment = require('../models/Comment');
+var File = require('../models/File');
 var util = require('../util');
+var fs = require('fs');
 
 // Index
 router.get('/', async function(req, res){
@@ -38,11 +42,24 @@ router.get('/', async function(req, res){
           foreignField: 'post',
           as: 'comments'
       } },
+      { $lookup: {
+          from: 'files',
+          localField: 'attachment',
+          foreignField: '_id',
+          as: 'attachment'
+      } },
+      { $unwind: {
+        path: '$attachment',
+        preserveNullAndEmptyArrays: true
+      } },
       { $project: {
           title: 1,
           author: {
             username: 1,
           },
+          views: 1,
+          numId: 1,
+          attachment: { $cond: [{$and: ['$attachment', {$not: '$attachment.isDeleted'}]}, true, false] },
           createdAt: 1,
           commentCount: { $size: '$comments'}
       } },
@@ -78,7 +95,9 @@ router.get('/new', util.isLoggedin, function(req, res){
 });
 
 // create
-router.post('/', util.isLoggedin, function(req, res){
+router.post('/', util.isLoggedin, upload.single('attachment'), async function(req, res){ // 4-1
+  var attachment = req.file?await File.createNewInstance(req.file, req.user._id):undefined; // 4-2
+  req.body.attachment = attachment;
   req.body.author = req.user._id;
   Post.create(req.body, function(err, post){
     if(err){
@@ -86,6 +105,10 @@ router.post('/', util.isLoggedin, function(req, res){
       req.flash('errors', util.parseError(err));
       return res.redirect('/posts/new'+res.locals.getPostQueryString());
     }
+    if(attachment){                 // 4-4
+      attachment.postId = post._id; // 4-4
+      attachment.save();            // 4-4
+    }                               // 4-4
     res.redirect('/posts'+res.locals.getPostQueryString(false, { page:1, searchText:'' }));
   });
 });
@@ -96,7 +119,7 @@ router.get('/:id', function(req, res){
   var commentError = req.flash('commentError')[0] || { _id:null, parentComment: null, errors:{}}; //1
 
   Promise.all([
-      Post.findOne({_id:req.params.id}).populate({ path: 'author', select: 'username' }),
+      Post.findOne({_id:req.params.id}).populate({ path: 'author', select: 'username' }).populate({path: 'attachment',match:{isDeleted:false}}),
       Comment.find({post:req.params.id}).sort('createdAt').populate({ path: 'author', select: 'username' })
     ])
     .then(([post, comments]) => {
@@ -113,7 +136,9 @@ router.get('/:id/edit', util.isLoggedin, checkPermission, function(req, res){
   var post = req.flash('post')[0];
   var errors = req.flash('errors')[0] || {};
   if(!post){
-    Post.findOne({_id:req.params.id}, function(err, post){
+    Post.findOne({_id:req.params.id})
+      .populate({path:'attachment',match:{isDeleted:false}})
+      .exec(function(err, post){
         if(err) return res.json(err);
         res.render('posts/edit', { post:post, errors:errors });
       });
@@ -125,7 +150,19 @@ router.get('/:id/edit', util.isLoggedin, checkPermission, function(req, res){
 });
 
 // update
-router.put('/:id', util.isLoggedin, checkPermission, function(req, res){
+router.put('/:id', util.isLoggedin, checkPermission, upload.single('newAttachment'), async function(req, res){
+  var post = await Post.findOne({_id:req.params.id}).populate({path:'attachment',match:{isDeleted:false}});
+  if(post.attachment && (req.file || !req.body.attachment)){
+    var fileLink = './uploadedFiles/' + post.attachment.serverFileName;
+    fs.stat(fileLink , function(err, stats) {
+      if(err) return console.error(err);
+      fs.unlinkSync(fileLink,function(err){
+        if(err) return console.log(err);
+      });
+    });
+    post.attachment.processDelete();
+  }
+  req.body.attachment = req.file?await File.createNewInstance(req.file, req.user._id, req.params.id):post.attachment;
   req.body.updatedAt = Date.now();
   Post.findOneAndUpdate({_id:req.params.id}, req.body, {runValidators:true}, function(err, post){
     if(err){
@@ -138,7 +175,18 @@ router.put('/:id', util.isLoggedin, checkPermission, function(req, res){
 });
 
 // destroy
-router.delete('/:id', util.isLoggedin, checkPermission, function(req, res){
+router.delete('/:id', util.isLoggedin, checkPermission, async function(req, res){
+  var post = await Post.findOne({_id:req.params.id}).populate({path:'attachment',match:{isDeleted:false}});
+  if(post.attachment) {
+    var fileLink = './uploadedFiles/' + post.attachment.serverFileName;
+    fs.stat(fileLink , function(err, stats) {
+      if(err) return console.error(err);
+      fs.unlinkSync(fileLink,function(err){
+        if(err) return console.log(err);
+      });
+    });
+    post.attachment.processDelete();
+  }
   Post.deleteOne({_id:req.params.id}, function(err){
     if(err) return res.json(err);
     res.redirect('/posts'+res.locals.getPostQueryString());
