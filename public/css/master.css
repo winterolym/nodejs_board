@@ -228,6 +228,12 @@ body {
   display: table-cell;
   vertical-align: middle;
 }
+.gaon-marketing > img {
+  align-items: center;
+  justify-content: center;
+  width: 140px;
+  height: 140px;
+}
 
 /* Gallery
 -------------------------------------------------- */
