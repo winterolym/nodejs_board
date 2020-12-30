@@ -70,7 +70,7 @@ function(req,res,next){
   }
 },
 passport.authenticate('local-login', {
-  successRedirect : '/posts',
+  successRedirect : '/',
   failureRedirect : '/login'
 }
 ));
@@ -79,6 +79,11 @@ passport.authenticate('local-login', {
 router.get('/logout', function(req, res) {
   req.logout();
   res.redirect('/');
+});
+
+// Gallery
+router.get('/gallery', function (req,res) {
+  res.render('home/gallery');
 });
 
 module.exports = router;
