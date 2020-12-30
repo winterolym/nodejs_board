@@ -81,4 +81,9 @@ router.get('/logout', function(req, res) {
   res.redirect('/');
 });
 
+// Gallery
+router.get('/gallery', function (req,res) {
+  res.render('home/gallery');
+});
+
 module.exports = router;

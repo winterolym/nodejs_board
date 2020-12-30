@@ -221,3 +221,17 @@ body {
 {
   text-decoration: underline;
 }
+
+/* posts/index
+-------------------------------------------------- */
+.intro-body {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+/* Gallery
+-------------------------------------------------- */
+.gallery-img > img{
+  width: 100%;
+  height: auto;
+}
