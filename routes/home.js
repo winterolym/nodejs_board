@@ -21,12 +21,15 @@ function apiCall(url) {
 
 // Home
 router.get('/', function(req, res){
-  async.parallel({
-    posts: apiCall('http://localhost:3000/posts/getPosts')
-  }, function(err, results) {
-    if (err) console.log(err);
-    res.render("home/welcome", results);
-  });
+
+//  async.parallel({
+//    posts: apiCall('http://localhost:3000/posts/getPosts')
+//  }, function(err, results) {
+//    if (err) console.log(err);
+//    res.render("home/welcome", results);
+//  });
+
+  res.render('home/index');
 });
 
 router.get('/about', function(req, res){
