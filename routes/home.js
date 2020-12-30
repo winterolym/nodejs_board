@@ -70,7 +70,7 @@ function(req,res,next){
   }
 },
 passport.authenticate('local-login', {
-  successRedirect : '/posts',
+  successRedirect : '/',
   failureRedirect : '/login'
 }
 ));
