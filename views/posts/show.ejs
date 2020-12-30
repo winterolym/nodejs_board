@@ -12,6 +12,7 @@
         <ol class="breadcrumb p-1 pl-2 pr-2">
           <li class="breadcrumb-item"><a href="/">Home</a></li>
           <li class="breadcrumb-item"><a href="/posts">Board</a></li>
+          <li class="breadcrumb-item"><a href="/posts/<%= post.board.board %>"><%= post.board.display %></a></li>
           <li class="breadcrumb-item active" aria-current="page"><%= post.title %></li>
         </ol>
       </nav>
