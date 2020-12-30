@@ -29,7 +29,7 @@
           <% posts.forEach(function(post) { %>
             <tr>
               <td>
-                <a href="/posts/<%= post._id %><%= getPostQueryString() %>" class="title-container">
+                <a href="/posts/<%= board.board %>/<%= post._id %><%= getPostQueryString() %>" class="title-container">
                   <div data-search-highlight="title" class="title-ellipsis ellipsis float-left" style="display: inline;">
                     <span class="title-text"><%= post.title %></span>
                   </div>
