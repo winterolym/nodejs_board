@@ -159,3 +159,85 @@ body {
 .highlighted {
   background-color: yellow;
 }
+
+/* Comments
+-------------------------------------------------- */
+.post-body,
+.comment-text {
+  white-space: pre-line;
+}
+
+.comment-color {
+    background-color: #fafafa
+}
+
+.comment-control {
+    height: 48px;
+    border-radius: 25px
+}
+
+.comment-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #35b69f;
+    outline: 0;
+    box-shadow: none;
+    text-indent: 10px
+}
+
+.comment-edit,
+.comment-reply,
+.comment-edit-enabled .comment-show {
+  display:none;
+}
+
+.comment-edit-enabled .comment-edit,
+.comment-reply-enabled .comment-reply {
+  display:inherit;
+}
+
+.c-badge {
+    background-color: #35b69f;
+    color: white;
+    height: 20px;
+    font-size: 11px;
+    width: 42px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2px
+}
+
+/* a Tag underline fix
+-------------------------------------------------- */
+.board-table .author,
+.board-table .date {
+  width: 100px;
+}
+.board-table .title-container:hover .title-comments,
+.board-table .title-container:hover .title-text,
+.board-table .title-container:hover .title-attachment
+{
+  text-decoration: underline;
+}
+
+/* posts/index
+-------------------------------------------------- */
+.intro-body {
+  display: table-cell;
+  vertical-align: middle;
+}
+.gaon-marketing > img {
+  align-items: center;
+  justify-content: center;
+  width: 140px;
+  height: 140px;
+}
+
+/* Gallery
+-------------------------------------------------- */
+.gallery-img > img{
+  width: 100%;
+  height: auto;
+}

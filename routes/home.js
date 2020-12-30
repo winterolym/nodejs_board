@@ -21,12 +21,15 @@ function apiCall(url) {
 
 // Home
 router.get('/', function(req, res){
-  async.parallel({
-    posts: apiCall('http://localhost:3000/posts/getPosts')
-  }, function(err, results) {
-    if (err) console.log(err);
-    res.render("home/welcome", results);
-  });
+
+//  async.parallel({
+//    posts: apiCall('http://localhost:3000/posts/getPosts')
+//  }, function(err, results) {
+//    if (err) console.log(err);
+//    res.render("home/welcome", results);
+//  });
+
+  res.render('home/index');
 });
 
 router.get('/about', function(req, res){
@@ -67,7 +70,7 @@ function(req,res,next){
   }
 },
 passport.authenticate('local-login', {
-  successRedirect : '/posts',
+  successRedirect : '/',
   failureRedirect : '/login'
 }
 ));
@@ -76,6 +79,11 @@ passport.authenticate('local-login', {
 router.get('/logout', function(req, res) {
   req.logout();
   res.redirect('/');
+});
+
+// Gallery
+router.get('/gallery', function (req,res) {
+  res.render('home/gallery');
 });
 
 module.exports = router;

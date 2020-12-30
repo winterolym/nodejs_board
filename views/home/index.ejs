@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%- include('../partials/head') %>
+</head>
+<body>
+  <%- include('../partials/nav') %>
+
+  <!-- Carousel -->
+  <div id="myCarousel" class="carousel main-carousel slide" data-bs-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-bs-target="#myCarousel" data-bs-slide-to="0" class="active"></li>
+      <li data-bs-target="#myCarousel" data-bs-slide-to="1"></li>
+      <li data-bs-target="#myCarousel" data-bs-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner">
+      <div class="carousel-item main-carousel-item active">
+        <img src="https://images.pexels.com/photos/60626/pexels-photo-60626.jpeg?cs=srgb&dl=pexels-fabricio-trujillo-60626.jpg&fm=jpg" class="d-block w-100" alt="idk">
+        <div class="overlay"></div>
+        <div class="container">
+          <div class="carousel-caption main-carousel-caption text-start">
+            <h1>컴퓨터공학선도</h1>
+            <p>가온고등학교의 컴퓨터 공학을 선도하는 동아리</p>
+            <p><a class="btn btn-lg btn-primary" href="#" role="button">신청</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item main-carousel-item">
+        <img src="https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?cs=srgb&dl=pexels-fauxels-3183197.jpg&fm=jpg" class="d-block w-100" alt="idk">
+        <div class="overlay"></div>
+        <div class="container">
+          <div class="carousel-caption main-carousel-caption text-start">
+            <h1>소개</h1>
+            <p>컴퓨터공학선도에 대하여</p>
+            <p><a class="btn btn-lg btn-primary" href="/about" role="button">자세히</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item main-carousel-item">
+        <img src="https://images.pexels.com/photos/122400/pexels-photo-122400.jpeg?cs=srgb&dl=pexels-markus-spiske-122400.jpg&fm=jpg" class="d-block w-100" alt="idk">
+        <div class="overlay"></div>
+        <div class="container">
+          <div class="carousel-caption main-carousel-caption text-start">
+            <h1>갤러리</h1>
+            <p>동아리 활동사진</p>
+            <p><a class="btn btn-lg btn-primary" href="/gallery" role="button">보러가기</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <a class="carousel-control-prev" href="#myCarousel" role="button" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#myCarousel" role="button" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </a>
+  </div>
+
+  <!-- /Carousel -->
+
+  <div class="container marketing">
+
+    <!-- Three columns of text below the carousel -->
+    <div class="row">
+      <div class="col-lg-4 gaon-marketing">
+        <img class="bd-placeholder-img rounded-circle" src="https://img.freepik.com/free-photo/note-cork_1101-772.jpg?size=626&ext=jpg">
+
+        <h2>공지사항</h2>
+        <p>컴퓨터공학선도의 최신 소식과 공지사항을 확인하세요.</p>
+        <p><a class="btn btn-secondary" href="/posts/notice" role="button">자세히보기 &raquo;</a></p>
+      </div><!-- /.col-lg-4 -->
+      <div class="col-lg-4 gaon-marketing">
+        <img class="bd-placeholder-img rounded-circle" src="https://static4.depositphotos.com/1011415/290/v/600/depositphotos_2902188-stock-illustration-writing-fountain-pen.jpg">
+
+        <h2>신청</h2>
+        <p>컴퓨터공학선도에 들어오세요</p>
+        <p><a class="btn btn-secondary" href="#" role="button">자세히보기 &raquo;</a></p>
+      </div><!-- /.col-lg-4 -->
+      <div class="col-lg-4 gaon-marketing">
+        <img class="bd-placeholder-img rounded-circle" src="https://st.depositphotos.com/1047404/4478/i/600/depositphotos_44788455-stock-photo-colorful-modern-art-gallery.jpg">
+
+        <h2>갤러리</h2>
+        <p>컴퓨터공학선도에서 진행하는 활동사진을 보세요.</p>
+        <p><a class="btn btn-secondary" href="/gallery" role="button">자세히보기 &raquo;</a></p>
+      </div><!-- /.col-lg-4 -->
+    </div><!-- /.row -->
+
+
+    <!-- START THE FEATURETTES -->
+
+    <hr class="featurette-divider">
+
+
+    </div><!-- /.container -->
+  </div>
+<%- include('../partials/foot') %>
+</body>
+</html>

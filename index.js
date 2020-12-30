@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var flash = require('connect-flash');
-var session = require('express-session');
+var session = require('cookie-session');
 var passport = require('./config/passport');
 var util = require('./util');
 var app = express();
@@ -55,7 +55,8 @@ app.use(function(req,res,next){
 app.use('/', require('./routes/home'));
 app.use('/posts', util.getPostQueryString, require('./routes/posts'));
 app.use('/users', require('./routes/users'));
-// app.use('/photos', require('./routes/photos'));
+app.use('/comments', util.getPostQueryString, require('./routes/comments'));
+app.use('/files', require('./routes/files'));
 
 // Port setting
 var port = process.env.PORT || 3000;

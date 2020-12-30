@@ -12,6 +12,7 @@
         <ol class="breadcrumb p-1 pl-2 pr-2">
           <li class="breadcrumb-item"><a href="/">Home</a></li>
           <li class="breadcrumb-item"><a href="/posts">Board</a></li>
+          <li class="breadcrumb-item"><a href="/posts/<%= post.board.board %>"><%= post.board.display %></a></li>
           <li class="breadcrumb-item active" aria-current="page"><%= post.title %></li>
         </ol>
       </nav>
@@ -21,6 +22,11 @@
         <div class="row">
 
           <div class="col-md-7 col-lg-8 col-xl-9 order-sm-2 order-md-1">
+            <% if(post.attachment) { %>
+              <div class="ms-2 mt-1">
+                <small><span class="material-icons" style="vertical-align:middle;">attachment</span> <a href="/files/<%= post.attachment.serverFileName %>/<%= post.attachment.originalFileName %>"><%= post.attachment.originalFileName %></a> (<%= util.bytesToSize(post.attachment.size) %>)</small>
+              </div>
+            <% } %>
             <div class="post-body p-2" data-search-highlight="body"><%= post.body %></div>
           </div>
 
@@ -71,6 +77,30 @@
         <% } %>
       </div>
 
+      <h4 class="mt-3">Comments</h4>
+
+      <% if(commentTrees.length){ %>
+        <div class="mt-3 border-bottom">
+          <% commentTrees.forEach(function(comment) { %>
+            <%- include('./partials/comment-show', {
+              post: post,
+              comment: comment,
+              commentForm: commentForm,
+              commentError: commentError,
+            }); %>
+          <% }) %>
+        </div>
+      <% } %>
+
+      <div class="mt-3">
+        <%- include('./partials/comment-form', {
+          actionUrl:'/comments?postId=' + post._id,
+          comment: {},
+          commentForm: commentForm,
+          commentError: commentError,
+          parentComment: null,
+        }); %>
+      </div>
     </div>
   </body>
 </html>
