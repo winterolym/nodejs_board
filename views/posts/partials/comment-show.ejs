@@ -33,14 +33,34 @@
           </small>
           <% if(isAuthenticated){ %>
             <small class="d-block">
-              <a href="javascript:void(0)" onclick="$('.comment-reply-enabled').removeClass('comment-reply-enabled'); $('.comment-edit-enabled').removeClass('comment-edit-enabled'); $('#comment-<%= comment._id %>').addClass('comment-reply-enabled')">reply</a>
+              <a href="javascript:void(0)" onclick="$('.comment-reply-enabled').removeClass('comment-reply-enabled'); $('.comment-edit-enabled').removeClass('comment-edit-enabled'); $('#comment-<%= comment._id %>').addClass('comment-reply-enabled')">Reply</a>
               <% if(comment.author && currentUser.id == comment.author.id){ %>
                 |
                 <a href="javascript:void(0)" onclick="$('.comment-reply-enabled').removeClass('comment-reply-enabled'); $('.comment-edit-enabled').removeClass('comment-edit-enabled'); $('#comment-<%= comment._id %>').addClass('comment-edit-enabled')">Edit</a>
                 |
-                <form action="/comments/<%= comment._id %>?postId=<%= post._id %>&_method=delete<%= getPostQueryString(true) %>" method="post" class="d-inline">
-                  <a href="javascript:void(0)" onclick="confirm('Do you want to delete this?')?this.parentElement.submit():null;">Delete</a>
-                </form>
+                <!-- 삭제 버튼(Modal) -->
+                <a href="#" data-bs-toggle="modal" data-bs-target="#deleteComment">
+                  Delete
+                </a>
+                <div class="modal fade" id="deleteComment" tabindex="-1" aria-labelledby="deleteCommentLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="deleteCommentLabel">삭제</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        삭제하시겠습니까?
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                        <form action="/comments/<%= comment._id %>?postId=<%= post._id %>&_method=delete<%= getPostQueryString(true) %>" method="post" class="d-inline">
+                          <button type="submit" class="btn btn-primary">삭제</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               <% } %>
             </small>
           <% } %>

@@ -30,7 +30,7 @@
         <% } %>
       </div>
     </div>
-    <% if(commentError._id == comment._id && commentError.parentComment == parentComment && commentError.errors.text){ %> <!-- 2 -->
+    <% if(commentError._id == comment._id && commentError.parentComment == parentComment && commentError.errors.text){ %>
       <span class="invalid-feedback d-block"><%= commentError.errors.text.message %></span>
     <% } %>
   </fieldset>
