@@ -103,7 +103,7 @@ router.get('/:board', async function(req, res){
 router.get('/:board/new', util.isLoggedin, async function(req, res){
   var board = await checkBoardAndReturn(req.params.board);
   if(!board) {
-    return res.json('\''+req.params.board + '\' 은(는) 존재하지 않는 게시판입니다.');
+    return res.status(404).json('\'' + req.params.board + '\' 은(는) 존재하지 않는 게시판입니다.');
   }
   var post = req.flash('post')[0] || {};
   var errors = req.flash('errors')[0] || {};
@@ -148,6 +148,7 @@ router.get('/:board/:id', async function(req, res){
       Comment.find({post:req.params.id}).sort('createdAt').populate({ path: 'author', select: 'username' })
     ])
     .then(([post, comments]) => {
+      if(!post) return res.status(404).json('The post you are looking for deos not exist.');
       var commentTrees = util.convertToTrees(comments, '_id','parentComment','childComments');                               //2
       res.render('posts/show', { post:post, commentTrees:commentTrees, commentForm:commentForm, commentError:commentError}); //2
     })
@@ -157,12 +158,13 @@ router.get('/:board/:id', async function(req, res){
 });
 
 // edit
-router.get('/:id/edit', util.isLoggedin, checkPermission, function(req, res){
+router.get('/:board/:id/edit', util.isLoggedin, checkPermission, function(req, res){
   var post = req.flash('post')[0];
   var errors = req.flash('errors')[0] || {};
   if(!post){
     Post.findOne({_id:req.params.id})
       .populate({path:'attachment',match:{isDeleted:false}})
+      .populate({ path: 'board' })
       .exec(function(err, post){
         if(err) return res.json(err);
         res.render('posts/edit', { post:post, errors:errors });
@@ -175,12 +177,12 @@ router.get('/:id/edit', util.isLoggedin, checkPermission, function(req, res){
 });
 
 // update
-router.put('/:id', util.isLoggedin, checkPermission, upload.single('newAttachment'), async function(req, res){
+router.put('/:board/:id', util.isLoggedin, checkPermission, upload.single('newAttachment'), async function(req, res){
   var board = await checkBoardAndReturn(req.params.board);
   if(!board) {
     return res.json('\''+req.params.board + '\' 은(는) 존재하지 않는 게시판입니다.');
   }
-  var post = await Post.findOne({_id:req.params.id}).populate({path:'attachment',match:{isDeleted:false}});
+  var post = await Post.findOne({_id:req.params.id}).populate({path:'attachment',match:{isDeleted:false}}).populate({ path: 'board' });
   if(post.attachment && (req.file || !req.body.attachment)){
     var fileLink = './uploadedFiles/' + post.attachment.serverFileName;
     fs.stat(fileLink , function(err, stats) {
@@ -193,19 +195,24 @@ router.put('/:id', util.isLoggedin, checkPermission, upload.single('newAttachmen
   }
   req.body.attachment = req.file?await File.createNewInstance(req.file, req.user._id, req.params.id):post.attachment;
   req.body.updatedAt = Date.now();
-  Post.findOneAndUpdate({_id:req.params.id}, req.body, {runValidators:true}, function(err, post){
+  Post.findOneAndUpdate({_id:req.params.id},
+    req.body,
+    {runValidators:true}
+  )
+  .populate({ path: 'board' })
+  .exec(function(err, post){
     if(err){
       req.flash('post', req.body);
       req.flash('errors', util.parseError(err));
-      return res.redirect('/posts/'+req.params.id+'/edit'+res.locals.getPostQueryString());
+      return res.redirect('/posts/'+req.params.board+'/'+req.params.id+'/edit'+res.locals.getPostQueryString());
     }
-    res.redirect('/posts/'+req.params.id+res.locals.getPostQueryString());
+    res.redirect('/posts/'+post.board.board+'/'+req.params.id+res.locals.getPostQueryString());
   });
 });
 
 // destroy
-router.delete('/:id', util.isLoggedin, checkPermission, async function(req, res){
-  var post = await Post.findOne({_id:req.params.id}).populate({path:'attachment',match:{isDeleted:false}});
+router.delete('/:board/:id', util.isLoggedin, checkPermission, async function(req, res){
+  var post = await Post.findOne({_id:req.params.id}).populate({path:'attachment',match:{isDeleted:false}}).populate({ path: 'board' });
   if(post.attachment) {
     var fileLink = './uploadedFiles/' + post.attachment.serverFileName;
     fs.stat(fileLink , function(err, stats) {
@@ -218,7 +225,7 @@ router.delete('/:id', util.isLoggedin, checkPermission, async function(req, res)
   }
   Post.deleteOne({_id:req.params.id}, function(err){
     if(err) return res.json(err);
-    res.redirect('/posts'+res.locals.getPostQueryString());
+    res.redirect('/posts/'+post.board.board+'/'+res.locals.getPostQueryString());
   });
 });
 
