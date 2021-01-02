@@ -12,12 +12,12 @@
         <ol class="breadcrumb p-1 pl-2 pr-2">
           <li class="breadcrumb-item"><a href="/">Home</a></li>
           <li class="breadcrumb-item"><a href="/posts">Board</a></li>
-          <li class="breadcrumb-item"><a href="/posts/<%= board.name %>"><%= board.display %></a></li>
+          <li class="breadcrumb-item"><a href="/posts/<%= board.board %>"><%= board.display %></a></li>
           <li class="breadcrumb-item active" aria-current="page">New Post</li>
         </ol>
       </nav>
 
-      <form action="/posts/<%= board.name %><%= getPostQueryString() %>" enctype="multipart/form-data" method="post">
+      <form action="/posts/<%= board.board %><%= getPostQueryString() %>" enctype="multipart/form-data" method="post">
 
         <div class="form-group mb-3">
           <label for="title">Title</label>
