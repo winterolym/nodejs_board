@@ -18,7 +18,7 @@
         </ol>
       </nav>
 
-      <form action="/posts/<%= post.board.name %>/<%= post._id %>?_method=put<%= getPostQueryString(true) %>" enctype="multipart/form-data" method="post">
+      <form action="/posts/<%= post.board.board %>/<%= post._id %>?_method=put<%= getPostQueryString(true) %>" enctype="multipart/form-data" method="post">
 
         <div class="form-group mb-3">
           <label for="title">Title</label>

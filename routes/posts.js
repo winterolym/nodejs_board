@@ -206,7 +206,7 @@ router.put('/:board/:id', util.isLoggedin, checkPermission, upload.single('newAt
       req.flash('errors', util.parseError(err));
       return res.redirect('/posts/'+req.params.board+'/'+req.params.id+'/edit'+res.locals.getPostQueryString());
     }
-    res.redirect('/posts/'+post.board.name+'/'+req.params.id+res.locals.getPostQueryString());
+    res.redirect('/posts/'+post.board.board+'/'+req.params.id+res.locals.getPostQueryString());
   });
 });
 
@@ -225,7 +225,7 @@ router.delete('/:board/:id', util.isLoggedin, checkPermission, async function(re
   }
   Post.deleteOne({_id:req.params.id}, function(err){
     if(err) return res.json(err);
-    res.redirect('/posts/'+post.board.name+'/'+res.locals.getPostQueryString());
+    res.redirect('/posts/'+post.board.board+'/'+res.locals.getPostQueryString());
   });
 });
 
@@ -271,6 +271,6 @@ async function createSearchQuery(queries){
 }
 
 async function checkBoardAndReturn(boardName){
-  var board = await Board.findOne({ name: boardName })
+  var board = await Board.findOne({ board: boardName })
   return board;
 }

@@ -23,10 +23,10 @@
           <button type="submit" class="btn btn-primary h-100 mr-2 pl-4 pr-4">Edit</button>
           <a href="javascript:void(0)" onclick="$('#comment-<%= comment._id %>').removeClass('comment-edit-enabled')">Cancel</a>
         <% } else if(parentComment) {%>
-          <button type="submit" class="btn btn-primary h-100 mr-2">Reply</button>
+          <button type="submit" class="btn btn-primary h-100 mr-2">Add Reply</button>
           <a href="javascript:void(0)" onclick="$('#comment-<%= parentComment %>').removeClass('comment-reply-enabled')">Cancel</a>
         <% } else { %>
-          <button type="submit" class="btn btn-primary h-100 mr-2">Comment</button>
+          <button type="submit" class="btn btn-primary h-100 mr-2">Add Comment</button>
         <% } %>
       </div>
     </div>
