@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 // schema
 var boardSchema = mongoose.Schema({
-  board:{type:String, required:true, unique:true},
+  name:{type:String, required:true, unique:true},
   display:{type:String, required:true}
 });
 
