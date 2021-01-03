@@ -26,9 +26,9 @@ var userSchema = mongoose.Schema({
     match:[/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,'Should be a vaild email address!'],
     trim:true
   },
-  admin:{
-    type:Boolean,
-    default:false
+  rank:{
+    type:mongoose.Schema.Types.ObjectId, ref:'rank',
+    default: mongoose.Types.ObjectId('5ff138c5e8ed4980c9ab92c5')
   }
 },{
   toObject:{virtuals:true}

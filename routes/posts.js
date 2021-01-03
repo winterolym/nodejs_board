@@ -145,7 +145,7 @@ router.get('/:board/:id', async function(req, res){
 
   Promise.all([
       Post.findOne({_id:req.params.id}).populate({ path: 'author', select: 'username' }).populate({ path: 'board' }).populate({path: 'attachment',match:{isDeleted:false}}),
-      Comment.find({post:req.params.id}).sort('createdAt').populate({ path: 'author', select: 'username' })
+      Comment.find({post:req.params.id}).sort('createdAt').populate({ path: 'author', select: 'username', populate: { path: 'rank'} })
     ])
     .then(([post, comments]) => {
       if(!post) return res.status(404).json('The post you are looking for deos not exist.');
