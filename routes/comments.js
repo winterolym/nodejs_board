@@ -7,7 +7,6 @@ var util = require('../util');
 // create
 router.post('/', util.isLoggedin, checkPostId, function(req, res){
   var post = res.locals.post;
-  console.log(post);
   req.body.author = req.user._id;
   req.body.post = post._id;
 

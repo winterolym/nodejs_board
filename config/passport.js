@@ -1,13 +1,16 @@
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/User');
+var Rank = require('../models/Rank');
 
 // serialize & deserialize User
 passport.serializeUser(function(user, done) {
   done(null, user.id);
 });
 passport.deserializeUser(function(id, done) {
-  User.findOne({_id:id}, function(err, user) {
+  User.findOne({_id:id})
+  .populate('rank')
+  .exec(function(err, user) {
     done(err, user);
   });
 });
@@ -21,7 +24,7 @@ passport.use('local-login',
     },
     function(req, username, password, done) {
       User.findOne({username:username})
-        .select({password:1})
+        .select({password:1, rank:1})
         .exec(function(err, user) {
           if (err) return done(err);
 
