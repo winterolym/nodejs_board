@@ -21,14 +21,6 @@ function apiCall(url) {
 
 // Home
 router.get('/', function(req, res){
-
-//  async.parallel({
-//    posts: apiCall('http://localhost:3000/posts/getPosts')
-//  }, function(err, results) {
-//    if (err) console.log(err);
-//    res.render("home/welcome", results);
-//  });
-
   res.render('home/index');
 });
 
@@ -69,10 +61,10 @@ function(req,res,next){
     res.redirect('/login');
   }
 },
-passport.authenticate('local-login', {
-  successRedirect : '/',
-  failureRedirect : '/login'
-}
+  passport.authenticate('local-login', {
+    successRedirect : '/',
+    failureRedirect : '/login'
+  }
 ));
 
 // Logout

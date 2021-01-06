@@ -126,10 +126,10 @@ router.post('/:board', util.isLoggedin, upload.single('attachment'), async funct
       req.flash('errors', util.parseError(err));
       return res.redirect('/posts/'+req.params.board+'/new'+res.locals.getPostQueryString());
     }
-    if(attachment){                 // 4-4
-      attachment.postId = post._id; // 4-4
-      attachment.save();            // 4-4
-    }                               // 4-4
+    if(attachment){
+      attachment.postId = post._id;
+      attachment.save();
+    }
     res.redirect('/posts/'+req.params.board+res.locals.getPostQueryString(false, { page:1, searchText:'' }));
   });
 });
